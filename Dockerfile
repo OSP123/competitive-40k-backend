@@ -1,19 +1,18 @@
 # start by pulling the python image
 FROM python:3.9-alpine
 
-# copy the requirements file into the image
-COPY ./requirements.txt ./requirements.txt
+RUN mkdir -p /usr/src/app/competitive-40k-backend
 
 # switch working directory
-WORKDIR /
+WORKDIR /usr/src/app/competitive-40k-backend
+
+# copy the requirements file into the image
+COPY requirements.txt .flaskenv api.py /usr/src/app/competitive-40k-backend/
 
 # install the dependencies and packages in the requirements file
 RUN pip install -r requirements.txt
 
-# copy every content from the local file to the image
-COPY . .
-
 # configure the container to run in an executed manner
-ENTRYPOINT [ "python" ]
+ENTRYPOINT [ "flask" ]
 
-CMD ["view.py" ]
+CMD ["run", "--host=0.0.0.0", "--port=5001"]
